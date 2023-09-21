@@ -30,8 +30,20 @@ export const StoreModal = () => {
     defaultValues: { name: "" },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setLoading(true)
+      const response = await fetch("/api/stores", {
+        method: "POST",
+        body: JSON.stringify(values),
+      })
+      const data = await response.json()
+      window.location.assign(`/${data.id}`)
+    } catch (error) {
+      toast.error("Something went wrong.")
+    } finally {
+      setLoading(false)
+    }
   }
   return (
     <Modal

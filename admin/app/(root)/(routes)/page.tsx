@@ -3,9 +3,8 @@
 import { useEffect } from "react"
 import { UserButton } from "@clerk/nextjs"
 
+import { useStoreModal } from "@/hooks/use-store-modal"
 import { Modal } from "@/components/ui/modal"
-
-import { useStoreModal } from "../../hooks/use-store-modal"
 
 const SetupPage = () => {
   const onOpen = useStoreModal((state) => state.onOpen)
