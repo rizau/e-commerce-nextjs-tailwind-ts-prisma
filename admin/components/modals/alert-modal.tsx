@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 "use client"
 
+=======
+>>>>>>> 4ef1d117ce288f8bf95754e3107d6e42944e87d0
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
