@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
+import ImageUpload from "@/components/ui/image-upload"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/modals/alert-modal"
@@ -52,12 +53,26 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 
   const onSubmit = async (data: BillboardFormValues) => {
     try {
+      console.log("submit billboard")
       setLoading(true)
-      const response = await fetch(`/api/stores/${params.storeId}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      })
+      let response
+      if (initialData) {
+        response = await fetch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify(data),
+          }
+        )
+      } else {
+        response = await fetch(`/api/${params.storeId}/billboards`, {
+          method: "POST",
+          body: JSON.stringify(data),
+        })
+      }
+
       router.refresh()
+      router.push(`/${params.storeId}/billboards`)
       toast.success("Updated successfuly")
     } catch (error) {
       toast.error("Something went wrong")
@@ -69,15 +84,17 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = () => {
     try {
       setLoading(true)
-      fetch(`/api/stores/${params.storeId}`, { method: "DELETE" }).then(
-        (_res) => {
-          router.refresh()
-          router.push("/")
-          toast.success("Store deleted.")
-        }
-      )
+      fetch(`/api/${params.storeId}/billboards/${params.billboardId}`, {
+        method: "DELETE",
+      }).then((_res) => {
+        router.refresh()
+        router.push("/")
+        toast.success("Billboard deleted.")
+      })
     } catch (error) {
-      toast.error("There are many records about this store, first delete them")
+      toast.error(
+        "There are many records about this billboard, first delete them"
+      )
     } finally {
       setLoading(false)
       setOpen(false)
@@ -86,7 +103,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 
   const title = initialData ? "Update billboard" : "Create billboard"
   const description = initialData ? "Update a billboard" : "Add a billboard"
-  const actionButtonName = initialData ? "Save Changes" : "Create"
+  const actionButtonName = initialData ? "Save Changes" : "Create Billboard"
 
   return (
     <>
@@ -118,6 +135,28 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           className="space-y-8 w-full"
         >
           <div className="grid grid-cols-3 gap-8">
+            {" "}
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image Url</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      disabled={loading}
+                      onChange={(url) => {
+                        field.onChange(url)
+                        console.log(url)
+                      }}
+                      onRemove={() => {}}
+                      value={field.value ? [field.value] : []}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="label"
@@ -136,6 +175,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               )}
             />
           </div>
+
           <Button disabled={loading} className="ml-auto" type="submit">
             {actionButtonName}
           </Button>
