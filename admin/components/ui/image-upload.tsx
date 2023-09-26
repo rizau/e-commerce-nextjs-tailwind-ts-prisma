@@ -12,6 +12,8 @@ interface ImageUploadProps {
   disabled?: boolean
   onChange: (value: string) => void
   onRemove: (value: string) => void
+  onUpload: (url: string) => void
+
   value: string[]
 }
 
@@ -19,16 +21,27 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   disabled,
   onChange,
   onRemove,
+  onUpload,
   value,
 }) => {
   const [isMounted, setIsMounted] = useState(false)
+  // const [isLoaded, SetIsLoaded] = useState(true)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
+  const onImageChange = (url: string) => {
+    onChange(url)
+    // SetIsLoaded(false)
+  }
+
+  const onImageUploadHandler = (url: string) => {
+    onUpload(url)
+  }
+
   if (!isMounted) return null
-  console.log(value)
+  //console.log(value)
   return (
     <div>
       <div className="mb-4 flex items-center gap-4">
@@ -39,7 +52,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           >
             <div className="z-10 absolute top-2 right-2">
               <Button
-                disabled={disabled}
+                //disabled={disabled}
                 onClick={() => onRemove(url)}
                 variant="destructive"
                 size="icon"
@@ -51,7 +64,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         ))}
       </div>
-      <ImageUploadForm onChange={onChange} />
+      <ImageUploadForm
+        onChange={onImageChange}
+        onImageUpload={onImageUploadHandler}
+      />
     </div>
   )
 }

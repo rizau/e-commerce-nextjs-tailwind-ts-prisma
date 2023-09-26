@@ -6,6 +6,7 @@ import { Input } from "./input"
 
 interface PrivatePageProps {
   onChange: (value: string) => void
+  onImageUpload: (url: string) => void
 }
 
 export default function ImageUploadForm(props: PrivatePageProps): JSX.Element {
@@ -36,7 +37,7 @@ export default function ImageUploadForm(props: PrivatePageProps): JSX.Element {
 
         const data = await response.json()
 
-        // props.onChange(data.url)
+        props.onImageUpload(data.url)
       } catch (error) {
         // Handle errors here
       }
