@@ -1,6 +1,6 @@
 import { writeFile } from "fs/promises"
 import { join } from "path"
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
   const data = await req.formData()
@@ -14,5 +14,5 @@ export async function POST(req: NextRequest) {
   const path = join("./public", "uploads", file.name)
   await writeFile(path, buffer)
 
-  return Response.json({ success: true, path })
+  return NextResponse.json({ success: true, path })
 }

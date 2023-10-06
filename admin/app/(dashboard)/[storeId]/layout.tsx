@@ -21,8 +21,9 @@ export default async function DashboardLayout({
 
   return (
     <>
+      {/* @ts-expect-error Server Component */}
       <Navbar />
-      {children}
+      <div>{children}</div>
     </>
   )
 }

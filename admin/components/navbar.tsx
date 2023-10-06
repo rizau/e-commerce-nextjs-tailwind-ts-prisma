@@ -8,7 +8,10 @@ import StoreSwitcher from "@/components/store-switcher"
 export default async function Navbar() {
   const { userId } = auth()
 
-  if (!userId) redirect("/sign-in")
+  if (!userId) {
+    redirect("/sign-in")
+    return null
+  }
 
   const stores = await prismadb.store.findMany({ where: { userId } })
   return (

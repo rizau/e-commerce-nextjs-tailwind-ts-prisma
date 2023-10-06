@@ -3,11 +3,7 @@ import { auth } from "@clerk/nextjs"
 
 import prismadb from "@/lib/prismadb"
 
-export const SetupLayout = async ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
+const SetupLayout = async ({ children }: { children: React.ReactNode }) => {
   const { userId } = auth()
   if (!userId) redirect("/sign-in")
 
@@ -17,7 +13,7 @@ export const SetupLayout = async ({
 
   if (store) redirect(`/${store.id}`)
 
-  return <>{children}</>
+  return <div>{children}</div>
 }
 
 export default SetupLayout
