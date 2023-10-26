@@ -19,6 +19,8 @@ model Store {
   categories Category[]  @relation("StoreToCategory")
   createdAt  DateTime    @default(now())
   updateAt   DateTime    @updatedAt
+
+  @@map("Trio_Store")
 }
 
 model Billboard {
@@ -32,6 +34,7 @@ model Billboard {
   updatedAt  DateTime   @updatedAt
 
   @@index([storeId])
+  @@map("Trio_Billboard")
 }
 
 model Category {
@@ -46,4 +49,5 @@ model Category {
 
   @@index([storeId])
   @@index([billboardId])
+  @@map("Trio_Category")
 }
