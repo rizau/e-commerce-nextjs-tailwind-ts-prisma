@@ -14,6 +14,14 @@ export default function ImageUploadForm(props: PrivatePageProps): JSX.Element {
   const [createObjectURL, setCreateObjectURL] = useState<string | null>(null)
 
   const uploadToClient = (event: ChangeEvent<HTMLInputElement>) => {
+    /*
+    
+     event?.target?.files ??
+      [].forEach((i) => {
+        setImage(i)
+        setCreateObjectURL(URL.createObjectURL(i))
+        props.onChange("/uploads/" + i)
+      })*/
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0]
 
@@ -53,7 +61,7 @@ export default function ImageUploadForm(props: PrivatePageProps): JSX.Element {
           </div>
         )}
 
-        <Input type="file" name="myImage" onChange={uploadToClient} />
+        <Input type="file" name="myImage" multiple onChange={uploadToClient} />
         <Button
           className="btn btn-primary"
           type="button" // Changed from "submit" to "button"
